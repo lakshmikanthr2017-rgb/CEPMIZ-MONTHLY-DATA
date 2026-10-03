@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEPMIZ ಯೋಜನೆ ಅಡಿ ಪೂರಕ ಪೌಷ್ಠಿಕ ಆಹಾರ ವಿವರ</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 15px;
+      color: #333;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 5px;
+      color: #1a5276;
+    }
+    .editable-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-weight: bold;
+      font-size: 15px;
+    }
+    .editable-field {
+      border-bottom: 2px dashed #007bff;
+      padding: 2px 8px;
+      outline: none;
+      background: #f9fbfd;
+    }
+    
+    /* Control Panel */
+    .control-panel {
+      background: #eef2f5;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border: 1px solid #d0d7de;
+    }
+    .form-group {
+      display: inline-block;
+      margin-right: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      font-weight: bold;
+    }
+    input, select, button {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .btn {
+      cursor: pointer;
+      font-weight: bold;
+      border: none;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    .btn-add { background-color: #28a745; }
+    .btn-add:hover { background-color: #218838; }
+    .btn-print { background-color: #007bff; }
+    .btn-print:hover { background-color: #0069d9; }
+    .btn-clear { background-color: #dc3545; }
+    .btn-clear:hover { background-color: #c82333; }
+    .btn-delete { background-color: #e74c3c; padding: 3px 8px; font-size: 11px; }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      text-align: center;
+    }
+    th, td {
+      border: 1px solid #777;
+      padding: 5px 3px;
+      white-space: nowrap;
+    }
+    th {
+      background-color: #e6f2ff;
+      color: #000;
+      font-weight: bold;
+    }
+    tr:nth-child(even) { background-color: #fcfcfc; }
+    .total-row {
+      font-weight: bold;
+      background-color: #e9ecef !important;
+    }
+
+    /* Summary Table */
+    .summary-section {
+      margin-top: 25px;
+      width: 50%;
+      min-width: 350px;
+    }
+    .summary-section h3 {
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: #1a5276;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+      font-weight: bold;
+      color: #555;
+    }
+
+    /* Print Styles */
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 8mm;
+      }
+      body {
+        background: #fff;
+        padding: 0;
+      }
+      .container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .editable-field {
+        border-bottom: none;
+        background: transparent;
+      }
+      table {
+        font-size: 10px;
+      }
+      th, td {
+        padding: 4px 2px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>CEPMIZ ಯೋಜನೆ ಅಡಿ ವಿತರಿಸುವ ಪೂರಕ ಪೌಷ್ಠಿಕ ಆಹಾರದ ತಿಂಗಳುವಾರು ವಿವರ</h2>
+  
+  <div class="editable-header">
+    <div>ಶಾಲೆಯ ಹೆಸರು : <span class="editable-field" contenteditable="true" id="schoolName">ಸರ್ಕಾರಿ ಹಿರಿಯ ಪ್ರಾಥಮಿಕ ಶಾಲೆ ...</span></div>
+    <div>ಸಾಲು / ತಿಂಗಳು : <span class="editable-field" contenteditable="true" id="academicYear">2026-27</span></div>
+  </div>
+
+  <!-- Data Entry Panel -->
+  <div class="control-panel no-print">
+    <div class="form-group">
+      <label for="entryDate">ದಿನಾಂಕ:</label>
+      <input type="date" id="entryDate">
+    </div>
+    <div class="form-group">
+      <label for="foodType">ವಿತರಿಸಿದ ಆಹಾರ:</label>
+      <select id="foodType">
+        <option value="ಕಡಲೆಕಾಳು">ಕಡಲೆಕಾಳು</option>
+        <option value="ಹೆಸರುಕಾಳು">ಹೆಸರುಕಾಳು</option>
+        <option value="ಶೇಂಗಾ">ಶೇಂಗಾ</option>
+        <option value="ಹಣ್ಣು">ಹಣ್ಣು</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="attendance">ಹಾಜರಾತಿ:</label>
+      <input type="number" id="attendance" placeholder="ಸಂಖ್ಯೆ ನಮೂದಿಸಿ" min="1">
+    </div>
+    <button class="btn btn-add" onclick="addRow()">+ ದಾಖಲಿಸು (Add)</button>
+    <button class="btn btn-print" onclick="window.print()">🖨️ A4 ಲ್ಯಾಂಡ್‌ಸ್ಕೇಪ್ ಪ್ರಿಂಟ್</button>
+    <button class="btn btn-clear" onclick="clearAllData()">🗑️ ಶೀಟ್ ಖಾಲಿ ಮಾಡಿ</button>
+  </div>
+
+  <!-- Main Data Table -->
+  <div class="table-responsive">
+    <table id="dataTable">
+      <thead>
+        <tr>
+          <th rowspan="2">ದಿನಾಂಕ</th>
+          <th rowspan="2">ಹಾಜರಾತಿ</th>
+          <th rowspan="2">ವಿತರಿಸಿದ ಆಹಾರ</th>
+          <th colspan="4">ಸಾಮಗ್ರಿ ಬಳಕೆ ಪ್ರಮಾಣ</th>
+          <th colspan="6">ವೆಚ್ಚದ ವಿವರ (Rs.)</th>
+          <th colspan="2">ಹಣ್ಣು ಹಂಚಿಕೆ</th>
+          <th rowspan="2" class="no-print">ಕ್ರಮ</th>
+        </tr>
+        <tr>
+          <th>ಕಾಳು (Kg)</th>
+          <th>ತರಕಾರಿ (Kg)</th>
+          <th>ಎಣ್ಣೆ (Lit)</th>
+          <th>ಇತರೆ (Kg)</th>
+          <th>ಇಂಧನ (Rs)</th>
+          <th>ಸಾಗಾಣಿಕಾ (Rs)</th>
+          <th>ಕಾಳು (Rs)</th>
+          <th>ತರಕಾರಿ (Rs)</th>
+          <th>ಎಣ್ಣೆ (Rs)</th>
+          <th>ಇತರೆ (Rs)</th>
+          <th>ಹಣ್ಣು (Kg)</th>
+          <th>ಹಣ್ಣು (Rs)</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Dynamic Rows Will Appear Here -->
+      </tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>TOTAL</td>
+          <td id="totAtt">0</td>
+          <td>-</td>
+          <td id="totKaluKg">0.00</td>
+          <td id="totVegKg">0.00</td>
+          <td id="totOilLit">0.00</td>
+          <td id="totOthKg">0.00</td>
+          <td id="totFuelRs">0.00</td>
+          <td id="totTransRs">0.00</td>
+          <td id="totKaluRs">0.00</td>
+          <td id="totVegRs">0.00</td>
+          <td id="totOilRs">0.00</td>
+          <td id="totOthRs">0.00</td>
+          <td id="totFruitKg">0.00</td>
+          <td id="totFruitRs">0.00</td>
+          <td class="no-print">-</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Monthly Consolidation Table -->
+  <div class="summary-section">
+    <h3>MONTHLY CONSOLIDATION (ಸಂಚಿತ ವಿವರ)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ವಿತರಿಸಿದ ಆಹಾರ / ಸಾಮಗ್ರಿ</th>
+          <th>ತೂಕ / ಪ್ರಮಾಣ (Kg / Lit)</th>
+          <th>ಒಟ್ಟು ಮೊತ್ತ (Rs)</th>
+        </tr>
+      </thead>
+      <tbody id="summaryBody">
+        <tr><td>ಕಡಲೆಕಾಳು / ಹೆಸರುಕಾಳು / ಶೇಂಗಾ (ಕಾಳು)</td><td id="sumKaluKg">0.00</td><td id="sumKaluRs">0.00</td></tr>
+        <tr><td>ತರಕಾರಿ</td><td id="sumVegKg">0.00</td><td id="sumVegRs">0.00</td></tr>
+        <tr><td>ಸೂರ್ಯಕಾಂತಿ ಎಣ್ಣೆ</td><td id="sumOilLit">0.00</td><td id="sumOilRs">0.00</td></tr>
+        <tr><td>ಇತರೆ (ಸಾಸಿವೆ, ಇಂಗು, ಉಪ್ಪು)</td><td id="sumOthKg">0.00</td><td id="sumOthRs">0.00</td></tr>
+        <tr><td>ಹಣ್ಣು</td><td id="sumFruitKg">0.00</td><td id="sumFruitRs">0.00</td></tr>
+        <tr><td>ಇಂಧನ ವೆಚ್ಚ</td><td>-</td><td id="sumFuelRs">0.00</td></tr>
+        <tr><td>ಸಾಗಾಣಿಕಾ ವೆಚ್ಚ</td><td>-</td><td id="sumTransRs">0.00</td></tr>
+        <tr class="total-row"><td>ಒಟ್ಟು ಮೊತ್ತ (Grand Total)</td><td>-</td><td id="sumGrandTotal">0.00</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Non-printable Footer Attribution -->
+  <div class="footer no-print">
+    Designed by : LAKSHMIKANTH R(Mob:9844444871)
+  </div>
+</div>
+
+<script>
+  let entries = JSON.parse(localStorage.getItem('cepmizEntries')) || [];
+
+  window.onload = function() {
+    renderTable();
+  };
+
+  function addRow() {
+    const date = document.getElementById('entryDate').value;
+    const food = document.getElementById('foodType').value;
+    const att = parseFloat(document.getElementById('attendance').value);
+
+    if (!date || isNaN(att) || att <= 0) {
+      alert("ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ದಿನಾಂಕ ಮತ್ತು ಹಾಜರಾತಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ!");
+      return;
+    }
+
+    const isGram = (food === "ಕಡಲೆಕಾಳು" || food === "ಹೆಸರುಕಾಳು" || food === "ಶೇಂಗಾ");
+    const isFruit = (food === "ಹಣ್ಣು");
+
+    const rowData = {
+      id: Date.now(),
+      date: date,
+      food: food,
+      att: att,
+      kaluKg: isGram ? (att * 0.035) : 0,
+      vegKg: isGram ? (att * 0.01) : 0,
+      oilLit: isGram ? (att * 0.0025) : 0,
+      othKg: isGram ? (att * 0.0025) : 0,
+      fuelRs: isGram ? (att * 1.40) : 0,
+      transRs: (isGram || isFruit) ? (att * 0.63) : 0,
+      kaluRs: isGram ? (att * 2.53) : 0,
+      vegRs: isGram ? (att * 0.90) : 0,
+      oilRs: isGram ? (att * 0.38) : 0,
+      othRs: isGram ? (att * 0.73) : 0,
+      fruitKg: isFruit ? (att * 0.13) : 0,
+      fruitRs: isFruit ? (att * 5.94) : 0
+    };
+
+    entries.push(rowData);
+    saveAndRender();
+    
+    // Reset attendance input
+    document.getElementById('attendance').value = '';
+  }
+
+  function deleteRow(id) {
+    entries = entries.filter(item => item.id !== id);
+    saveAndRender();
+  }
+
+  function clearAllData() {
+    if (confirm("ಎಲ್ಲಾ ಡೇಟಾವನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?")) {
+      entries = [];
+      saveAndRender();
+    }
+  }
+
+  function saveAndRender() {
+    localStorage.setItem('cepmizEntries', JSON.stringify(entries));
+    renderTable();
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = '';
+
+    let totals = {
+      att: 0, kaluKg: 0, vegKg: 0, oilLit: 0, othKg: 0,
+      fuelRs: 0, transRs: 0, kaluRs: 0, vegRs: 0, oilRs: 0,
+      othRs: 0, fruitKg: 0, fruitRs: 0
+    };
+
+    entries.forEach(item => {
+      totals.att += item.att;
+      totals.kaluKg += item.kaluKg;
+      totals.vegKg += item.vegKg;
+      totals.oilLit += item.oilLit;
+      totals.othKg += item.othKg;
+      totals.fuelRs += item.fuelRs;
+      totals.transRs += item.transRs;
+      totals.kaluRs += item.kaluRs;
+      totals.vegRs += item.vegRs;
+      totals.oilRs += item.oilRs;
+      totals.othRs += item.othRs;
+      totals.fruitKg += item.fruitKg;
+      totals.fruitRs += item.fruitRs;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.date}</td>
+        <td>${item.att}</td>
+        <td>${item.food}</td>
+        <td>${item.kaluKg ? item.kaluKg.toFixed(3) : ''}</td>
+        <td>${item.vegKg ? item.vegKg.toFixed(3) : ''}</td>
+        <td>${item.oilLit ? item.oilLit.toFixed(3) : ''}</td>
+        <td>${item.othKg ? item.othKg.toFixed(3) : ''}</td>
+        <td>${item.fuelRs ? item.fuelRs.toFixed(2) : ''}</td>
+        <td>${item.transRs ? item.transRs.toFixed(2) : ''}</td>
+        <td>${item.kaluRs ? item.kaluRs.toFixed(2) : ''}</td>
+        <td>${item.vegRs ? item.vegRs.toFixed(2) : ''}</td>
+        <td>${item.oilRs ? item.oilRs.toFixed(2) : ''}</td>
+        <td>${item.othRs ? item.othRs.toFixed(2) : ''}</td>
+        <td>${item.fruitKg ? item.fruitKg.toFixed(3) : ''}</td>
+        <td>${item.fruitRs ? item.fruitRs.toFixed(2) : ''}</td>
+        <td class="no-print"><button class="btn btn-delete" onclick="deleteRow(${item.id})">ಅಳಿಸು</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // Update Totals
+    document.getElementById('totAtt').innerText = totals.att;
+    document.getElementById('totKaluKg').innerText = totals.kaluKg.toFixed(3);
+    document.getElementById('totVegKg').innerText = totals.vegKg.toFixed(3);
+    document.getElementById('totOilLit').innerText = totals.oilLit.toFixed(3);
+    document.getElementById('totOthKg').innerText = totals.othKg.toFixed(3);
+    document.getElementById('totFuelRs').innerText = totals.fuelRs.toFixed(2);
+    document.getElementById('totTransRs').innerText = totals.transRs.toFixed(2);
+    document.getElementById('totKaluRs').innerText = totals.kaluRs.toFixed(2);
+    document.getElementById('totVegRs').innerText = totals.vegRs.toFixed(2);
+    document.getElementById('totOilRs').innerText = totals.oilRs.toFixed(2);
+    document.getElementById('totOthRs').innerText = totals.othRs.toFixed(2);
+    document.getElementById('totFruitKg').innerText = totals.fruitKg.toFixed(3);
+    document.getElementById('totFruitRs').innerText = totals.fruitRs.toFixed(2);
+
+    // Update Summary
+    document.getElementById('sumKaluKg').innerText = totals.kaluKg.toFixed(3);
+    document.getElementById('sumKaluRs').innerText = totals.kaluRs.toFixed(2);
+
+    document.getElementById('sumVegKg').innerText = totals.vegKg.toFixed(3);
+    document.getElementById('sumVegRs').innerText = totals.vegRs.toFixed(2);
+
+    document.getElementById('sumOilLit').innerText = totals.oilLit.toFixed(3);
+    document.getElementById('sumOilRs').innerText = totals.oilRs.toFixed(2);
+
+    document.getElementById('sumOthKg').innerText = totals.othKg.toFixed(3);
+    document.getElementById('sumOthRs').innerText = totals.othRs.toFixed(2);
+
+    document.getElementById('sumFruitKg').innerText = totals.fruitKg.toFixed(3);
+    document.getElementById('sumFruitRs').innerText = totals.fruitRs.toFixed(2);
+
+    document.getElementById('sumFuelRs').innerText = totals.fuelRs.toFixed(2);
+    document.getElementById('sumTransRs').innerText = totals.transRs.toFixed(2);
+
+    const grandTotal = totals.fuelRs + totals.transRs + totals.kaluRs + totals.vegRs + totals.oilRs + totals.othRs + totals.fruitRs;
+    document.getElementById('sumGrandTotal').innerText = grandTotal.toFixed(2);
+  }
+</script>
+
+</body>
+</html>
